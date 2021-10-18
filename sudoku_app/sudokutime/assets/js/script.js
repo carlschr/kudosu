@@ -35,13 +35,17 @@ function init() {
     });
 
     document.addEventListener('keyup', event => {
+        if (!lastSelected || lastSelected.className.includes('given')) return;
+
         let key = event.key;
         let digits = '123456789';
-        if (lastSelected && key === 'Backspace'){
+
+        if (key === 'Backspace'){
             lastSelected.textContent = '';
             return;
         };
-        if (digits.includes(key) && lastSelected && !lastSelected.className.includes('given')){
+        
+        if (digits.includes(key)){
             lastSelected.textContent = key;
         };
     });
