@@ -1,35 +1,45 @@
 :root {
-    --border-thickness: 3px;
-    --grid-width: 900px;
-    --box-width: calc((var(--grid-width) - 2*var(--border-thickness))/3);
-    --cell-width: calc((var(--box-width) - 2*var(--border-thickness))/3);
+    --grid-width: 500px;
+    --border-thickness: calc(var(--grid-width)/300);
+    --grid-text: calc(var(--grid-width)/30 * 2);
 }
 
 * {
-    box-sizing: border-box;
+    font-family: sans-serif;
+}
+
+body {
+    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
 }
 
 .grid {
-    width: calc(var(--grid-width));
-    height: calc(var(--grid-width));
+    width: var(--grid-width);
+    height: var(--grid-width);
     display: grid;
     grid-template: repeat(3, 1fr) / repeat(3, 1fr);
-    margin: 0 auto;
+    margin: 32px auto;
+    font-size: var(--grid-text);
+    background: black;
 }
+
 .box {
-    width: var(--box-width);
-    height: var(--box-width);
     display: grid;
     grid-template: repeat(3, 1fr) / repeat(3, 1fr);
 }
+
 .cell {
-    width: var(--cell-width);
-    height: var(--cell-width);
     cursor: pointer;
+    font-weight: bolder;
+    padding: 0;
+    background: #EEE;
+}
+
+.cell.given {
+    color: rgb(20, 20, 138);
 }
 
 .cell:focus {
-    box-shadow: inset 0 0 0 10px rgb(158, 158, 248) 
+    box-shadow: inset 0 0 0 calc(3 * var(--border-thickness)) rgb(158, 158, 248) 
 }
 
 .grid, .grid>*, .grid>*>* {
