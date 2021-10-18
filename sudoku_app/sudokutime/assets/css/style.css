@@ -1,0 +1,37 @@
+:root {
+    --border-thickness: 3px;
+    --grid-width: 900px;
+    --box-width: calc((var(--grid-width) - 2*var(--border-thickness))/3);
+    --cell-width: calc((var(--box-width) - 2*var(--border-thickness))/3);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+.grid {
+    width: calc(var(--grid-width));
+    height: calc(var(--grid-width));
+    display: grid;
+    grid-template: repeat(3, 1fr) / repeat(3, 1fr);
+    margin: 0 auto;
+}
+.box {
+    width: var(--box-width);
+    height: var(--box-width);
+    display: grid;
+    grid-template: repeat(3, 1fr) / repeat(3, 1fr);
+}
+.cell {
+    width: var(--cell-width);
+    height: var(--cell-width);
+    cursor: pointer;
+}
+
+.cell:focus {
+    box-shadow: inset 0 0 0 10px rgb(158, 158, 248) 
+}
+
+.grid, .grid>*, .grid>*>* {
+    border: var(--border-thickness) solid black;
+}
