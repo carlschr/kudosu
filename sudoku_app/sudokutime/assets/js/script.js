@@ -25,28 +25,36 @@ function init() {
         boxEls[box].append(cell);
     });
 
-    let lastSelected = null;
+    let selected = null;
 
     gridEl.addEventListener('click', event => {
         let el = event.target;
+        if (el.className.includes('given')) return;
         if (el.className.includes('cell')){
-            lastSelected = el;
+            if (el.className.includes('cell-active')) {
+                el.className = 'cell';
+                selected = null;
+            } else {
+                el.className = 'cell cell-active';
+                if (selected) selected.className = 'cell';
+                selected = el;
+            };
         };
     });
 
     document.addEventListener('keyup', event => {
-        if (!lastSelected || lastSelected.className.includes('given')) return;
+        if (!selected || selected.className.includes('given')) return;
 
         let key = event.key;
         let digits = '123456789';
 
         if (key === 'Backspace'){
-            lastSelected.textContent = '';
+            selected.textContent = '';
             return;
         };
-        
+
         if (digits.includes(key)){
-            lastSelected.textContent = key;
+            selected.textContent = key;
         };
     });
 };
