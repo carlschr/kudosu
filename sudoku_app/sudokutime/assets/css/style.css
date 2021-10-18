@@ -2,7 +2,8 @@
     --grid-width: 500px;
     --border-thickness: calc(var(--grid-width)/300);
     --grid-text: calc(var(--grid-width)/30 * 2);
-    --primary: rgb(116, 116, 184);
+    --primary: rgb(166, 166, 221);
+    --secondary: rgb(93, 93, 126);
 }
 
 * {
@@ -11,6 +12,7 @@
 
 body {
     padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+    background: var(--secondary);
 }
 
 .grid {
@@ -32,14 +34,14 @@ body {
     cursor: pointer;
     font-weight: bolder;
     padding: 0;
-    background: #EEE;
+    background: #FFF;
 }
 
 .cell.given {
-    color: var(--primary);
+    color: var(--secondary);
 }
 
-.cell:focus {
+.cell-active {
     box-shadow: inset 0 0 0 calc(3 * var(--border-thickness)) var(--primary);
 }
 .cell:focus-visible {
@@ -48,4 +50,55 @@ body {
 
 .grid, .grid>*, .grid>*>* {
     border: var(--border-thickness) solid black;
+}
+
+.controls {
+    display: flex;
+    justify-content: space-evenly;
+    width: calc(var(--grid-width));
+    margin: 16px auto;
+    background: white;
+    padding: 16px 0;
+}
+
+.number-pad, .input-type {
+    display: grid;
+    width: calc(var(--grid-width)/2 - 32px);
+    height: calc(var(--grid-width)/2 - 32px);
+    font-size: var(--grid-text);
+}
+
+.number-pad {
+    grid-template: repeat(3, 1fr) / repeat(3, 1fr);
+    grid-gap: 16px;
+}
+
+.input-type {
+    grid-template: repeat(2, 1fr) / repeat(2, 1fr);
+    grid-gap: 32px;
+}
+
+.controls button {
+    outline: none;
+    border: none;
+    cursor: pointer;
+}
+
+.number {
+    background: var(--primary);
+    font-weight: bolder;
+}
+
+.number:active {
+    background: var(--secondary);
+    box-shadow: inset 0 0 0 calc(3 * var(--border-thickness)) black;
+}
+
+.input-type button{
+    background: black;
+    color: white;
+}
+
+.active {
+    box-shadow: inset 0 0 0 calc(5 * var(--border-thickness)) var(--primary);
 }
