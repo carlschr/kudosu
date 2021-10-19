@@ -106,17 +106,33 @@ function init() {
 
     // Listener to enable user input of numbers with keyboard
     document.addEventListener('keyup', event => {
-        if (!selected || selected.className.includes('given')) return;
-        if (currentType === 'answer' && selected.dataset.pencil) return;
-        if (currentType === 'pencil-mark' && selected.textContent) return;
+        if (event.key === "Shift") return toggle();
 
+        // Flags for aborting early
+        if (!selected || selected.className.includes('given')) return;
+
+        // Current values
         let prevText = selected.textContent;
         let prevMark = selected.dataset.pencil;
-
         let key = event.key;
         let digits = '123456789';
 
-        if (selected.dataset.pencil.includes(key)) {
+        // Code for if the user presses backspace
+        if (key === 'Backspace'){
+            let newText =  '';
+            let newMark = prevMark.slice(0, prevMark.length - 1);
+
+            selected.textContent = newText;
+            selected.dataset.pencil = newMark;
+            addAction(selected, prevText, newText, prevMark, newMark);
+            return;
+        };
+
+        // Flags for aborting early
+        if (currentType === 'pencil-mark' && selected.textContent) return;
+
+        // Code for if the pencil mark already has the digit
+        if (selected.dataset.pencil.includes(key) && currentType === 'pencil-mark') {
             let newMark = prevMark.slice(0, prevMark.indexOf(key)) + prevMark.slice(prevMark.indexOf(key) + 1);
             let newText = prevText;
 
@@ -126,19 +142,11 @@ function init() {
             return;
         };
 
-        if (key === 'Backspace'){
-            let newText = (currentType === 'answer') ? '' : prevText;
-            let newMark = (currentType === 'pencil-mark') ? prevMark.slice(0, prevMark.length - 1) : prevMark;
-
-            selected.textContent = newText;
-            selected.dataset.pencil = newMark;
-            addAction(selected, prevText, newText, prevMark, newMark);
-            return;
-        };
         
+        // Code for if the user presses a valid digit
         if (digits.includes(key)){
             let newText = (currentType === 'answer') ? key : prevText;
-            let newMark = (currentType === 'pencil-mark') ? prevMark + key : prevMark;
+            let newMark = (currentType === 'pencil-mark') ? prevMark + key : '';
 
             if (selected.textContent === key) newText = '';
 
@@ -152,13 +160,17 @@ function init() {
     let numbers = document.querySelectorAll('button.number');
     numbers.forEach(num => {
         num.addEventListener('click', event => {
+            // Flags to abort early
             if (!selected) return;
             if (currentType === 'answer' && selected.dataset.pencil) return;
             if (currentType === 'pencil-mark' && selected.textContent) return;
+
+            // Current values
             let prevText = selected.textContent;
             let prevMark = selected.dataset.pencil;
             let val = event.target.textContent;
 
+            // Code for if the value is already in the answer or pencil-mark
             if (selected.textContent === val || prevMark.includes(val)) {
                 let newText = (currentType === 'answer') ? '' : prevText;
                 let newMark = (currentType === 'pencil-mark') ? prevMark.slice(0, prevMark.indexOf(val)) + prevMark.slice(prevMark.indexOf(val) + 1) : prevMark;
@@ -168,6 +180,8 @@ function init() {
                 addAction(selected, prevText, newText, prevMark, newMark);
                 return;
             };
+
+            // Code for if the value is new to the cell
             let newText = (currentType === 'answer') ? val : prevText;
             let newMark = (currentType === 'pencil-mark') ? prevMark + val : prevMark;
 
@@ -181,8 +195,9 @@ function init() {
     let pencilButton = document.querySelector('.pencil-mark');
     let answerButton = document.querySelector('.answer');
 
-    function toggle(event){
-        if (event.target.className.includes('pencil-mark')) {
+    // Funtion that toggles active classes
+    function toggle(){
+        if (answerButton.className.includes('active')) {
             answerButton.className = 'answer';
             pencilButton.className = 'pencil-mark active';
             currentType = 'pencil-mark';
