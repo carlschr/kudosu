@@ -39,10 +39,10 @@ body {
 }
 
 .cell::before {
-    content: attr('data-pencil');
+    content: attr(data-pencil);
     position: absolute;
-    top: 0;
-    left: 0;
+    top: 5%;
+    left: 5%;
     font-size: .5em;
 }
 

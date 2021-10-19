@@ -5,15 +5,16 @@ function init() {
     // Store actions in undo and redo stacks
     let undoStack = [];
     let redoStack = [];
+    let currentType = 'answer';
     
     // Function to add an action to the undo stack
-    function addAction(el, prevText, newText, prevType='answer', newType='answer'){
+    function addAction(el, prevText, newText, prevMark, newMark){
         undoStack.push({
             element: el,
             prevText: prevText,
             newText: newText,
-            prevType: prevType,
-            newType: newType
+            prevMark: prevMark,
+            newMark: newMark
         });
         redoStack = [];
     };
@@ -23,6 +24,7 @@ function init() {
         let action = undoStack.pop();
         redoStack.push(action);
         action.element.textContent = action.prevText;
+        action.element.dataset.pencil = action.prevMark;
     };
     
     // Function to redo an action
@@ -30,6 +32,7 @@ function init() {
         let action = redoStack.pop();
         undoStack.push(action);
         action.element.textContent = action.newText;
+        action.element.dataset.pencil = action.newMark;
     };
     
     // Undo and redo elements
@@ -52,11 +55,15 @@ function init() {
     let gridEl = document.querySelector('.grid');
     for (let i = 0; i < 9; i++){
         let box = document.createElement('div');
+
         box.setAttribute('class', 'box');
         box.setAttribute('data-box', i);
+
         let row = Math.floor(i/3) + 1;
         let col = i % 3 + 1;
+
         box.style.gridArea = `${row}/${col}/${row + 1}/${col + 1}`;
+
         gridEl.append(box);
     };
 
@@ -67,10 +74,12 @@ function init() {
         let col = i % 9;
         let box = Math.floor(col/3) + Math.floor(row/3) * 3;
         let cell = document.createElement('button');
+
         cell.setAttribute('class', (num === '.') ? 'cell' : 'cell given');
         cell.setAttribute('data-cell', i);
         cell.setAttribute('data-pencil', '');
         cell.textContent = (num === '.') ? '' : num;
+
         boxEls[box].append(cell);
     });
 
@@ -82,6 +91,7 @@ function init() {
     gridEl.addEventListener('click', event => {
         let el = event.target;
         if (el.className.includes('given')) return;
+
         if (el.className.includes('cell')){
             if (el.className.includes('cell-active')) {
                 el.className = 'cell';
@@ -97,20 +107,44 @@ function init() {
     // Listener to enable user input of numbers with keyboard
     document.addEventListener('keyup', event => {
         if (!selected || selected.className.includes('given')) return;
+        if (currentType === 'answer' && selected.dataset.pencil) return;
+        if (currentType === 'pencil-mark' && selected.textContent) return;
+
         let prevText = selected.textContent;
+        let prevMark = selected.dataset.pencil;
 
         let key = event.key;
         let digits = '123456789';
 
+        if (selected.dataset.pencil.includes(key)) {
+            let newMark = prevMark.slice(0, prevMark.indexOf(key)) + prevMark.slice(prevMark.indexOf(key) + 1);
+            let newText = prevText;
+
+            selected.textContent = newText;
+            selected.dataset.pencil = newMark;
+            addAction(selected, prevText, newText, prevMark, newMark);
+            return;
+        };
+
         if (key === 'Backspace'){
-            selected.textContent = '';
-            addAction(selected, prevText, '')
+            let newText = (currentType === 'answer') ? '' : prevText;
+            let newMark = (currentType === 'pencil-mark') ? prevMark.slice(0, prevMark.length - 1) : prevMark;
+
+            selected.textContent = newText;
+            selected.dataset.pencil = newMark;
+            addAction(selected, prevText, newText, prevMark, newMark);
             return;
         };
         
         if (digits.includes(key)){
-            selected.textContent = key;
-            addAction(selected, prevText, key)
+            let newText = (currentType === 'answer') ? key : prevText;
+            let newMark = (currentType === 'pencil-mark') ? prevMark + key : prevMark;
+
+            if (selected.textContent === key) newText = '';
+
+            selected.textContent = newText;
+            selected.dataset.pencil = newMark;
+            addAction(selected, prevText, newText, prevMark, newMark);
         };
     });
 
@@ -119,15 +153,27 @@ function init() {
     numbers.forEach(num => {
         num.addEventListener('click', event => {
             if (!selected) return;
+            if (currentType === 'answer' && selected.dataset.pencil) return;
+            if (currentType === 'pencil-mark' && selected.textContent) return;
             let prevText = selected.textContent;
+            let prevMark = selected.dataset.pencil;
+            let val = event.target.textContent;
 
-            if (selected.textContent === event.target.textContent) {
-                selected.textContent = '';
-                addAction(selected, prevText, '');
+            if (selected.textContent === val || prevMark.includes(val)) {
+                let newText = (currentType === 'answer') ? '' : prevText;
+                let newMark = (currentType === 'pencil-mark') ? prevMark.slice(0, prevMark.indexOf(val)) + prevMark.slice(prevMark.indexOf(val) + 1) : prevMark;
+
+                selected.textContent = newText;
+                selected.dataset.pencil = newMark;
+                addAction(selected, prevText, newText, prevMark, newMark);
                 return;
             };
-            selected.textContent = event.target.textContent;
-            addAction(selected, prevText, event.target.textContent);
+            let newText = (currentType === 'answer') ? val : prevText;
+            let newMark = (currentType === 'pencil-mark') ? prevMark + val : prevMark;
+
+            selected.textContent = newText;
+            selected.dataset.pencil = newMark;
+            addAction(selected, prevText, newText, prevMark, newMark);
         });
     });
 
@@ -139,9 +185,11 @@ function init() {
         if (event.target.className.includes('pencil-mark')) {
             answerButton.className = 'answer';
             pencilButton.className = 'pencil-mark active';
+            currentType = 'pencil-mark';
         } else {
             answerButton.className = 'answer active';
             pencilButton.className = 'pencil-mark';
+            currentType = 'answer';
         };
     }
     // Listeners to toggle type selection on click
