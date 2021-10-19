@@ -1,7 +1,53 @@
-function init() {    
+function init() {
+    //Example sudoku string
     let sudoku = '53..7....6..195....98....6.8...6...34..8.3..17...2...6.6....28....419..5....8..79'.split('');
-    let gridEl = document.querySelector('.grid');
+    
+    // Store actions in undo and redo stacks
+    let undoStack = [];
+    let redoStack = [];
+    
+    // Function to add an action to the undo stack
+    function addAction(el, str1, str2){
+        undoStack.push({
+            element: el,
+            prevText: str1,
+            newText: str2
+        });
+        redoStack = [];
+    };
+    
+    // Function to undo an action
+    function undo(){
+        let action = undoStack.pop();
+        redoStack.push(action);
+        action.element.textContent = action.prevText;
+    };
+    
+    // Function to redo an action
+    function redo(){
+        let action = redoStack.pop();
+        undoStack.push(action);
+        action.element.textContent = action.newText;
+    };
+    
+    // Undo and redo elements
+    let undoEl = document.querySelector('.undo');
+    let redoEl = document.querySelector('.redo');
 
+    // Undo click listener
+    undoEl.addEventListener('click', () => {
+        if (undoStack.length === 0) return;
+        undo();
+    });
+
+    // Redo click listener
+    redoEl.addEventListener('click', () => {
+        if (redoStack.length === 0) return;
+        redo();
+    });
+
+    // Adds the nine boxes of the sudoku grid to the DOM
+    let gridEl = document.querySelector('.grid');
     for (let i = 0; i < 9; i++){
         let box = document.createElement('div');
         box.setAttribute('class', 'box');
@@ -12,8 +58,8 @@ function init() {
         gridEl.append(box);
     };
 
+    // Adds the cells of the sudoku grid to the DOM using a sudoku string
     let boxEls = document.querySelectorAll('.box');
-
     sudoku.forEach((num, i) => {
         let row = Math.floor(i/9);
         let col = i % 9;
@@ -21,12 +67,16 @@ function init() {
         let cell = document.createElement('button');
         cell.setAttribute('class', (num === '.') ? 'cell' : 'cell given');
         cell.setAttribute('data-cell', i);
+        cell.setAttribute('data-pencil', '');
         cell.textContent = (num === '.') ? '' : num;
         boxEls[box].append(cell);
     });
 
+    // Declares a variable to store the currently selected cell
     let selected = null;
 
+    // Click listener to assign a cell to the selected variable
+    // and change stylings accordingly
     gridEl.addEventListener('click', event => {
         let el = event.target;
         if (el.className.includes('given')) return;
@@ -42,20 +92,41 @@ function init() {
         };
     });
 
+    // Listener to enable user input of numbers with keyboard
     document.addEventListener('keyup', event => {
         if (!selected || selected.className.includes('given')) return;
+        let prevText = selected.textContent;
 
         let key = event.key;
         let digits = '123456789';
 
         if (key === 'Backspace'){
             selected.textContent = '';
+            addAction(selected, prevText, '')
             return;
         };
-
+        
         if (digits.includes(key)){
             selected.textContent = key;
+            addAction(selected, prevText, key)
         };
+    });
+
+    // Allows user input of numbers with number button elements
+    let numbers = document.querySelectorAll('button.number');
+    numbers.forEach(num => {
+        num.addEventListener('click', event => {
+            if (!selected) return;
+            let prevText = selected.textContent;
+
+            if (selected.textContent === event.target.textContent) {
+                selected.textContent = '';
+                addAction(selected, prevText, '');
+                return;
+            };
+            selected.textContent = event.target.textContent;
+            addAction(selected, prevText, event.target.textContent);
+        });
     });
 };
 
