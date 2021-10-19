@@ -35,6 +35,15 @@ body {
     font-weight: bolder;
     padding: 0;
     background: #FFF;
+    position: relative;
+}
+
+.cell::before {
+    content: attr('data-pencil');
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-size: .5em;
 }
 
 .cell.given {
@@ -97,6 +106,10 @@ body {
 .input-type button{
     background: black;
     color: white;
+}
+
+.undo, .redo {
+    font-size: calc(1.75 * var(--grid-text));
 }
 
 .active {
