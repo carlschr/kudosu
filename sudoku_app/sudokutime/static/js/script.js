@@ -135,25 +135,18 @@ function init() {
     let pencilButton = document.querySelector('.pencil-mark');
     let answerButton = document.querySelector('.answer');
 
-    // Listeners to toggle type selection on click
-    pencilButton.addEventListener('click', event => {
-        if (event.target.className.includes('active')) {
-            event.target.className = 'pencil-mark';
-            answerButton.className = 'answer active';
-        } else {
-            event.target.className = 'pencil-mark active';
+    function toggle(event){
+        if (event.target.className.includes('pencil-mark')) {
             answerButton.className = 'answer';
-        };
-    });
-    answerButton.addEventListener('click', event => {
-        if (event.target.className.includes('active')) {
-            event.target.className = 'answer';
             pencilButton.className = 'pencil-mark active';
         } else {
-            event.target.className = 'answer active';
+            answerButton.className = 'answer active';
             pencilButton.className = 'pencil-mark';
         };
-    });
+    }
+    // Listeners to toggle type selection on click
+    pencilButton.addEventListener('click', toggle);
+    answerButton.addEventListener('click', toggle);
 };
 
 init();
