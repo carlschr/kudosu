@@ -7,11 +7,13 @@ function init() {
     let redoStack = [];
     
     // Function to add an action to the undo stack
-    function addAction(el, str1, str2){
+    function addAction(el, prevText, newText, prevType='answer', newType='answer'){
         undoStack.push({
             element: el,
-            prevText: str1,
-            newText: str2
+            prevText: prevText,
+            newText: newText,
+            prevType: prevType,
+            newType: newType
         });
         redoStack = [];
     };
@@ -127,6 +129,30 @@ function init() {
             selected.textContent = event.target.textContent;
             addAction(selected, prevText, event.target.textContent);
         });
+    });
+
+    // Answer type buttons
+    let pencilButton = document.querySelector('.pencil-mark');
+    let answerButton = document.querySelector('.answer');
+
+    // Listeners to toggle type selection on click
+    pencilButton.addEventListener('click', event => {
+        if (event.target.className.includes('active')) {
+            event.target.className = 'pencil-mark';
+            answerButton.className = 'answer active';
+        } else {
+            event.target.className = 'pencil-mark active';
+            answerButton.className = 'answer';
+        };
+    });
+    answerButton.addEventListener('click', event => {
+        if (event.target.className.includes('active')) {
+            event.target.className = 'answer';
+            pencilButton.className = 'pencil-mark active';
+        } else {
+            event.target.className = 'answer active';
+            pencilButton.className = 'pencil-mark';
+        };
     });
 };
 
