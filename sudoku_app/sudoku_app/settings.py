@@ -26,7 +26,7 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'l8_#s%#ukl*m&v^tx!9v0_gxjq+o6z
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'False'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['https://intense-everglades-41432.herokuapp.com/','127.0.0.1']
 
 
 # Application definition
