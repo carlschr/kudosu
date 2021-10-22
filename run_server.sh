@@ -1,0 +1,1 @@
+python sudoku_app/manage.py runserver
