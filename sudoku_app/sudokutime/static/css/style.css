@@ -110,6 +110,7 @@ body {
 .input-type button{
     background: black;
     color: white;
+    padding: 0;
 }
 
 .undo, .redo {
