@@ -115,7 +115,6 @@ body {
 
 .undo, .redo {
     font-size: calc(1.75 * var(--grid-text));
-    font-family: 'Zapf Dingbats';
 }
 
 .pencil-mark {
