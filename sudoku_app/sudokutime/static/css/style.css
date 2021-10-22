@@ -1,5 +1,5 @@
 :root {
-    --grid-width: 500px;
+    --grid-width: 90vw;
     --border-thickness: calc(var(--grid-width)/300);
     --grid-text: calc(var(--grid-width)/30 * 2);
     --primary: rgb(166, 166, 221);
@@ -63,29 +63,30 @@ body {
 }
 
 .controls {
+    font-size: var(--grid-text);
     display: flex;
     justify-content: space-evenly;
     width: calc(var(--grid-width));
-    margin: 16px auto;
+    margin: 1em auto;
     background: white;
-    padding: 16px 0;
+    padding: 1em 0;
 }
 
 .number-pad, .input-type {
     display: grid;
-    width: calc(var(--grid-width)/2 - 32px);
-    height: calc(var(--grid-width)/2 - 32px);
+    width: calc(var(--grid-width)/2 - 1.5em);
+    height: calc(var(--grid-width)/2 - 1.5em);
     font-size: var(--grid-text);
 }
 
 .number-pad {
     grid-template: repeat(3, 1fr) / repeat(3, 1fr);
-    grid-gap: 16px;
+    grid-gap: .5em;
 }
 
 .input-type {
     grid-template: repeat(2, 1fr) / repeat(2, 1fr);
-    grid-gap: 32px;
+    grid-gap: .5em;
 }
 
 .controls button {
