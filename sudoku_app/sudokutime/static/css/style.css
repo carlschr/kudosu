@@ -1,5 +1,5 @@
 :root {
-    --grid-width: 90vw;
+    --grid-width: min(50vh, 90vw);
     --border-thickness: calc(var(--grid-width)/300);
     --grid-text: calc(var(--grid-width)/30 * 2);
     --primary: rgb(166, 166, 221);
