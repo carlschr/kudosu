@@ -98,6 +98,8 @@ body {
 .number {
     background: var(--primary);
     font-weight: bolder;
+    color: black;
+    padding: 0;
 }
 
 .number:active {
@@ -112,6 +114,7 @@ body {
 
 .undo, .redo {
     font-size: calc(1.75 * var(--grid-text));
+    font-family: 'Zapf Dingbats';
 }
 
 .active {
