@@ -6,7 +6,6 @@ else:
     from .Node import Node
     from .Sudoku import Sudoku
     from .Column import ColumnNode
-import matplotlib.pyplot as plt
 
 class DLX:
     def __init__(self, sudoku_string):
@@ -176,38 +175,3 @@ if __name__ == '__main__':
         print(f'\nTest Solution: {Sudoku(sudoku_string)}')
     else:
         print('\nSudoku is unsolvable due to multiple solutions.')
-
-    x1 = []
-    y1 = []
-    x2 = []
-    y2 = []
-    x3 = []
-    y3 = []
-    x4 = []
-    y4 = []
-    for i, _ in enumerate(test_cover.matrix):
-        for j, _ in enumerate(test_cover.matrix[0]):
-            if test_cover.matrix[i][j] != 0:
-                current = test_cover.matrix[i][j]
-                if current.col < 81:
-                    y1.append(729 - i)
-                    x1.append(j)
-                    continue
-                if current.col < 162:
-                    y2.append(729 - i)
-                    x2.append(j)
-                    continue
-                if current.col < 243:
-                    y3.append(729 - i)
-                    x3.append(j)
-                    continue
-                y4.append(729 - i)
-                x4.append(j)
-    plt.scatter(x1, y1, marker='.', c='black')
-    plt.scatter(x2, y2, marker='.', c='blue')
-    plt.scatter(x3, y3, marker='.', c='green')
-    plt.scatter(x4, y4, marker='.', c='red')
-    plt.xlabel('x - axis')
-    plt.ylabel('y - axis')
-    plt.title('Cover Matrix')
-    plt.show()
