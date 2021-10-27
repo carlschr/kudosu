@@ -12,6 +12,17 @@
 </head>
 <body>
     <div class="grid">
+    {%for box in boxes%}
+        <div class='box' data-box={{forloop.counter}} style={{box.grid_area}}>
+        {% for cell in box.box %}
+        {% if cell == '0' %}
+            <button class='cell' data-pencil=''></button>
+        {% else %}
+            <button class='cell given' data-pencil=''>{{cell}}</button>
+        {% endif %}
+        {% endfor %}
+        </div>
+    {%endfor%}
     </div>
     <div class="controls">
         <div class="input-type">
