@@ -105,5 +105,3 @@ def generate_sudoku():
         puzzle = puzzle[0:cell] + solved_puzzle[cell:cell + 1] + puzzle[cell + 1:]
     
     return puzzle, solved_puzzle
-
-new_sudoku, new_sudoku_solved = generate_sudoku()
