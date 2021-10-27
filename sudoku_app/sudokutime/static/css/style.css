@@ -70,6 +70,7 @@ body {
     margin: 1em auto;
     background: white;
     padding: 1em 0;
+    box-shadow: 0 0 20px 3px rgba(0,0,0,.5);
 }
 
 .number-pad, .input-type {
@@ -91,8 +92,9 @@ body {
 
 .controls button {
     outline: none;
-    border: none;
+    border: solid black 1px;
     cursor: pointer;
+    box-shadow: 0 0 8px 1px rgba(0, 0, 0, .4);
 }
 
 .number {
@@ -104,7 +106,7 @@ body {
 
 .number:active {
     background: var(--secondary);
-    box-shadow: inset 0 0 0 calc(3 * var(--border-thickness)) black;
+    box-shadow: inset 0 0 0 calc(2 * var(--border-thickness)) black;
 }
 
 .input-type button{
@@ -125,9 +127,11 @@ body {
     top: 7%;
     left: 7%;
     content: '123';
+    font-size: calc(var(--grid-text)*3/4)
 }
 
 .active {
-    box-shadow: inset 0 0 0 calc(5 * var(--border-thickness)) var(--primary);
+    box-shadow: inset 0 0 0 calc(4 * var(--border-thickness)) var(--primary) !important;
     cursor: default !important;
+    border-color: var(--primary) !important;
 }
