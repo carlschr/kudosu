@@ -130,7 +130,6 @@ function init() {
         num.addEventListener('click', event => {
             // Flags to abort early
             if (!selected) return;
-            if (currentType === 'answer' && selected.dataset.pencil) return;
             if (currentType === 'pencil-mark' && selected.textContent) return;
 
             // Current values
@@ -138,20 +137,18 @@ function init() {
             let prevMark = selected.dataset.pencil;
             let val = event.target.textContent;
 
-            // Code for if the value is already in the answer or pencil-mark
-            if (selected.textContent === val || prevMark.includes(val)) {
-                let newText = (currentType === 'answer') ? '' : prevText;
-                let newMark = (currentType === 'pencil-mark') ? prevMark.slice(0, prevMark.indexOf(val)) + prevMark.slice(prevMark.indexOf(val) + 1) : prevMark;
+            // new values
+            let newText = (currentType === 'answer' && selected.textContent !== val) 
+                          ? val 
+                          : (currentType === 'answer') 
+                          ? '' 
+                          : prevText;
 
-                selected.textContent = newText;
-                selected.dataset.pencil = newMark;
-                addAction(selected, prevText, newText, prevMark, newMark);
-                return;
-            };
-
-            // Code for if the value is new to the cell
-            let newText = (currentType === 'answer') ? val : prevText;
-            let newMark = (currentType === 'pencil-mark') ? prevMark + val : prevMark;
+            let newMark = (currentType === 'pencil-mark' && !prevMark.includes(val)) 
+                          ? prevMark + val 
+                          : (currentType === 'pencil-mark') 
+                          ? prevMark.slice(0, prevMark.indexOf(val)) + prevMark.slice(prevMark.indexOf(val) + 1) 
+                          : '';
 
             selected.textContent = newText;
             selected.dataset.pencil = newMark;
