@@ -8,6 +8,7 @@
 
 * {
     font-family: sans-serif;
+    color: black;
 }
 
 body {
@@ -100,7 +101,6 @@ body {
 .number {
     background: var(--primary);
     font-weight: bolder;
-    color: black;
     padding: 0;
 }
 
