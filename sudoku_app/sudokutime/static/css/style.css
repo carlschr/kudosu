@@ -124,11 +124,11 @@ body {
 }
 
 .undo {
-    transform: rotate(-90deg);
+    /* transform: rotate(-90deg); */
 }
 
 .redo {
-    transform: rotate(90deg);
+    /* transform: rotate(90deg); */
 }
 
 .pencil-mark {
