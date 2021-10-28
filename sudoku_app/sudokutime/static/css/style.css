@@ -119,6 +119,14 @@ body {
     font-size: calc(1.75 * var(--grid-text));
 }
 
+.undo {
+    transform: rotate(-90deg);
+}
+
+.redo {
+    transform: rotate(90deg);
+}
+
 .pencil-mark {
     position: relative;
 }
