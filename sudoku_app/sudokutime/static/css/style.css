@@ -116,19 +116,17 @@ body {
 }
 
 .undo, .redo {
-    font-size: calc(1.75 * var(--grid-text));
-    display: grid;
-    place-items: center;
+    font-size: 200%;
     text-align: center;
     padding: 0;
 }
 
 .undo {
-    /* transform: rotate(-90deg); */
+    transform: rotate(-90deg);
 }
 
 .redo {
-    /* transform: rotate(90deg); */
+    transform: rotate(90deg);
 }
 
 .pencil-mark {
