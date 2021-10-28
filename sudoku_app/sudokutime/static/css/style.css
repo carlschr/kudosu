@@ -129,6 +129,10 @@ body {
     transform: rotate(90deg);
 }
 
+.answer {
+    font-size: calc(1.5 * var(--grid-text));
+}
+
 .pencil-mark {
     position: relative;
 }
