@@ -140,7 +140,7 @@ body {
     font-size: calc(var(--grid-text)*3/4)
 }
 
-.active {
+.active, .undo:active, .redo:active {
     box-shadow: inset 0 0 0 calc(4 * var(--border-thickness)) var(--primary) !important;
     cursor: default !important;
     border-color: var(--primary) !important;
