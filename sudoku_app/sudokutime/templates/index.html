@@ -13,7 +13,7 @@
 <body>
     <div class="grid">
     {%for box in boxes%}
-        <div class='box' data-box={{forloop.counter}} style={{box.grid_area}}>
+        <div class='box' data-solved={{box.box_solved}} style={{box.grid_area}}>
         {% for cell in box.box %}
         {% if cell == '0' %}
             <button class='cell' data-pencil=''></button>
