@@ -149,3 +149,30 @@ body {
     cursor: default !important;
     border-color: var(--primary) !important;
 }
+
+footer {
+    box-sizing: border-box;
+    position: absolute;
+    bottom: 0;
+    background: black;
+    height: 10vh;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: calc(1.5 * var(--grid-text));
+    padding: 0 5vw;
+}
+
+footer>* {
+    background: black;
+    color: white;
+    outline: none;
+    border: none;
+    cursor: pointer;
+}
+.new {
+    height: calc(1.5 * var(--grid-text));
+    width: calc(1.5 * var(--grid-text));
+    font-size: calc(1.5 * var(--grid-text));
+}
