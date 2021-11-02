@@ -48,25 +48,34 @@ function init() {
 
 
     // Declares a variable to store the currently selected cell
-    let selected = null;
+    let selected = [];
+    let selectAllowed = false;
 
-    // Click listener to assign a cell to the selected variable
-    // and change stylings accordingly
-    gridEl.addEventListener('click', event => {
+    const toggleCell = event => {
+        if (!selectAllowed) return;
         let el = event.target;
         if (el.className.includes('given')) return;
 
-        if (el.className.includes('cell')){
-            if (el.className.includes('cell-active')) {
-                el.className = 'cell';
-                selected = null;
-            } else {
-                el.className = 'cell cell-active';
-                if (selected) selected.className = 'cell';
-                selected = el;
-            };
+        if (el.className.includes('cell-active')) {
+            el.className = 'cell';
+            selected.splice(selected.indexOf(el), 1);
+        } else {
+            el.className = 'cell cell-active';
+            selected.push(el);
         };
+    };
+
+    // Click listener to assign a cell to the selected variable
+    // and change stylings accordingly
+    Array.from(gridEl.children).forEach(box => {
+        Array.from(box.children).forEach(cell => {
+            cell.addEventListener('mouseover', toggleCell);
+            cell.addEventListener('mousedown', event => {selectAllowed = true, toggleCell(event)});
+            cell.addEventListener('mouseup', () => selectAllowed = false);
+        });
     });
+
+    //--------------------------------------------------- todo: refactor below
 
     // Listener to enable user input of numbers with keyboard
     document.addEventListener('keyup', event => {
