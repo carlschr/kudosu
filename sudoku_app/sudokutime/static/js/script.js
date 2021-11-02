@@ -3,15 +3,15 @@ function init() {
     let undoStack = [];
     let redoStack = [];
     let currentType = 'answer';
+
+    // Accesses the grid element
+    let gridEl = document.querySelector('.grid');
     
     // Function to add an action to the undo stack
-    function addAction(el, prevText, newText, prevMark, newMark){
+    function addAction(prevGrid, newGrid){
         undoStack.push({
-            element: el,
-            prevText: prevText,
-            newText: newText,
-            prevMark: prevMark,
-            newMark: newMark
+            prevGrid,
+            newGrid
         });
         redoStack = [];
     };
@@ -20,16 +20,14 @@ function init() {
     function undo(){
         let action = undoStack.pop();
         redoStack.push(action);
-        action.element.textContent = action.prevText;
-        action.element.dataset.pencil = action.prevMark;
+        gridEl.innerHTML = action.prevGrid;
     };
     
     // Function to redo an action
     function redo(){
         let action = redoStack.pop();
         undoStack.push(action);
-        action.element.textContent = action.newText;
-        action.element.dataset.pencil = action.newMark;
+        gridEl.innerHTML = action.newGrid;
     };
     
     // Undo and redo elements
@@ -48,8 +46,6 @@ function init() {
         redo();
     });
 
-    // Accesses the grid element
-    let gridEl = document.querySelector('.grid');
 
     // Declares a variable to store the currently selected cell
     let selected = null;
@@ -80,6 +76,7 @@ function init() {
         if (!selected || selected.className.includes('given')) return;
 
         // Current values
+        let prevGrid = gridEl.innerHTML;
         let prevText = selected.textContent;
         let prevMark = selected.dataset.pencil;
         let key = event.key;
@@ -92,7 +89,8 @@ function init() {
 
             selected.textContent = newText;
             selected.dataset.pencil = newMark;
-            addAction(selected, prevText, newText, prevMark, newMark);
+            let newGrid = gridEl.innerHTML;
+            addAction(prevGrid, newGrid);
             return;
         };
 
@@ -106,7 +104,8 @@ function init() {
 
             selected.textContent = newText;
             selected.dataset.pencil = newMark;
-            addAction(selected, prevText, newText, prevMark, newMark);
+            let newGrid = gridEl.innerHTML;
+            addAction(prevGrid, newGrid);
             return;
         };
 
@@ -120,7 +119,8 @@ function init() {
 
             selected.textContent = newText;
             selected.dataset.pencil = newMark;
-            addAction(selected, prevText, newText, prevMark, newMark);
+            let newGrid = gridEl.innerHTML;
+            addAction(prevGrid, newGrid);
         };
     });
 
@@ -133,6 +133,7 @@ function init() {
             if (currentType === 'pencil-mark' && selected.textContent) return;
 
             // Current values
+            let prevGrid = gridEl.innerHTML;
             let prevText = selected.textContent;
             let prevMark = selected.dataset.pencil;
             let val = event.target.textContent;
@@ -152,7 +153,8 @@ function init() {
 
             selected.textContent = newText;
             selected.dataset.pencil = newMark;
-            addAction(selected, prevText, newText, prevMark, newMark);
+            let newGrid = gridEl.innerHTML;
+            addAction(prevGrid, newGrid);
         });
     });
 
