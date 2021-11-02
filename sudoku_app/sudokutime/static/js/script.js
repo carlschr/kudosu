@@ -70,7 +70,10 @@ function init() {
     Array.from(gridEl.children).forEach(box => {
         Array.from(box.children).forEach(cell => {
             cell.addEventListener('mouseover', toggleCell);
-            cell.addEventListener('mousedown', event => {selectAllowed = true, toggleCell(event)});
+            cell.addEventListener('mousedown', event => {
+                selected.forEach(el => el.className = 'cell');
+                selectAllowed = true, toggleCell(event);
+            });
             cell.addEventListener('mouseup', () => selectAllowed = false);
         });
     });
@@ -79,7 +82,7 @@ function init() {
 
     // Listener to enable user input of numbers with keyboard
     document.addEventListener('keyup', event => {
-        if (event.key === "Shift") return toggle();
+        if (event.key === "Shift") return toggleType();
 
         // Flags for aborting early
         if (!selected || selected.className.includes('given')) return;
@@ -172,7 +175,7 @@ function init() {
     let answerButton = document.querySelector('.answer');
 
     // Funtion that toggles active classes
-    function toggle(){
+    function toggleType(){
         if (answerButton.className.includes('active')) {
             answerButton.className = 'answer';
             pencilButton.className = 'pencil-mark active';
@@ -184,8 +187,8 @@ function init() {
         };
     }
     // Listeners to toggle type selection on click
-    pencilButton.addEventListener('click', toggle);
-    answerButton.addEventListener('click', toggle);
+    pencilButton.addEventListener('click', toggleType);
+    answerButton.addEventListener('click', toggleType);
 };
 
 init();
