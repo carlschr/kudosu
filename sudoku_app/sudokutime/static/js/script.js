@@ -78,93 +78,95 @@ function init() {
         });
     });
 
-    //--------------------------------------------------- todo: refactor below
+    gridEl.addEventListener('mouseleave', () => selectAllowed = false);
 
     // Listener to enable user input of numbers with keyboard
     document.addEventListener('keyup', event => {
         if (event.key === "Shift") return toggleType();
 
         // Flags for aborting early
-        if (!selected || selected.className.includes('given')) return;
+        if (!selected) return;
 
-        // Current values
-        let prevGrid = gridEl.innerHTML;
-        let prevText = selected.textContent;
-        let prevMark = selected.dataset.pencil;
-        let key = event.key;
-        let digits = '123456789';
+        // Constant values
+        const key = event.key;
+        const digits = '123456789';
+        const prevGrid = gridEl.innerHTML;
 
-        // Code for if the user presses backspace
-        if (key === 'Backspace'){
-            let newText =  '';
-            let newMark = prevMark.slice(0, prevMark.length - 1);
+        selected.forEach(cell => {
+            // Previous values
+            let prevText = cell.textContent;
+            let prevMark = cell.dataset.pencil;
 
-            selected.textContent = newText;
-            selected.dataset.pencil = newMark;
-            let newGrid = gridEl.innerHTML;
-            addAction(prevGrid, newGrid);
-            return;
-        };
+            // Code for if the user presses backspace
+            if (key === 'Backspace'){
+                let newText =  '';
+                let newMark = prevMark.slice(0, prevMark.length - 1);
 
-        // Flags for aborting early
-        if (currentType === 'pencil-mark' && selected.textContent) return;
+                cell.textContent = newText;
+                cell.dataset.pencil = newMark;
+                return;
+            };
 
-        // Code for if the pencil mark already has the digit
-        if (selected.dataset.pencil.includes(key) && currentType === 'pencil-mark') {
-            let newMark = prevMark.slice(0, prevMark.indexOf(key)) + prevMark.slice(prevMark.indexOf(key) + 1);
-            let newText = prevText;
+            // Flags for aborting early
+            if (currentType === 'pencil-mark' && cell.textContent) return;
 
-            selected.textContent = newText;
-            selected.dataset.pencil = newMark;
-            let newGrid = gridEl.innerHTML;
-            addAction(prevGrid, newGrid);
-            return;
-        };
+            // Code for if the pencil mark already has the digit
+            if (cell.dataset.pencil.includes(key) && currentType === 'pencil-mark') {
+                let newMark = prevMark.slice(0, prevMark.indexOf(key)) + prevMark.slice(prevMark.indexOf(key) + 1);
+                let newText = prevText;
 
-        
-        // Code for if the user presses a valid digit
-        if (digits.includes(key)){
-            let newText = (currentType === 'answer') ? key : prevText;
-            let newMark = (currentType === 'pencil-mark') ? prevMark + key : '';
+                cell.textContent = newText;
+                cell.dataset.pencil = newMark;
+                return;
+            };
 
-            if (selected.textContent === key) newText = '';
+            
+            // Code for if the user presses a valid digit
+            if (digits.includes(key)){
+                let newText = (currentType === 'answer') ? key : prevText;
+                let newMark = (currentType === 'pencil-mark') ? prevMark + key : '';
 
-            selected.textContent = newText;
-            selected.dataset.pencil = newMark;
-            let newGrid = gridEl.innerHTML;
-            addAction(prevGrid, newGrid);
-        };
+                if (cell.textContent === key) newText = '';
+
+                cell.textContent = newText;
+                cell.dataset.pencil = newMark;
+            };
+        });
+
+        let newGrid = gridEl.innerHTML;
+        addAction(prevGrid, newGrid);
     });
 
     // Allows user input of numbers with number button elements
     let numbers = document.querySelectorAll('button.number');
     numbers.forEach(num => {
         num.addEventListener('click', event => {
-            // Flags to abort early
             if (!selected) return;
-            if (currentType === 'pencil-mark' && selected.textContent) return;
-
-            // Current values
             let prevGrid = gridEl.innerHTML;
-            let prevText = selected.textContent;
-            let prevMark = selected.dataset.pencil;
             let val = event.target.textContent;
+            
+            selected.forEach(cell => {
+                if (currentType === 'pencil-mark' && cell.textContent) return;
+                let prevText = cell.textContent;
+                let prevMark = cell.dataset.pencil;
+    
+                // new values
+                let newText = (currentType === 'answer' && cell.textContent !== val) 
+                              ? val 
+                              : (currentType === 'answer') 
+                              ? '' 
+                              : prevText;
+    
+                let newMark = (currentType === 'pencil-mark' && !prevMark.includes(val)) 
+                              ? prevMark + val 
+                              : (currentType === 'pencil-mark') 
+                              ? prevMark.slice(0, prevMark.indexOf(val)) + prevMark.slice(prevMark.indexOf(val) + 1) 
+                              : '';
+    
+                cell.textContent = newText;
+                cell.dataset.pencil = newMark;
+            });
 
-            // new values
-            let newText = (currentType === 'answer' && selected.textContent !== val) 
-                          ? val 
-                          : (currentType === 'answer') 
-                          ? '' 
-                          : prevText;
-
-            let newMark = (currentType === 'pencil-mark' && !prevMark.includes(val)) 
-                          ? prevMark + val 
-                          : (currentType === 'pencil-mark') 
-                          ? prevMark.slice(0, prevMark.indexOf(val)) + prevMark.slice(prevMark.indexOf(val) + 1) 
-                          : '';
-
-            selected.textContent = newText;
-            selected.dataset.pencil = newMark;
             let newGrid = gridEl.innerHTML;
             addAction(prevGrid, newGrid);
         });
