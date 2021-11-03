@@ -57,7 +57,6 @@ function init() {
 
     const toggleCell = event => {
         if (!selectAllowed) return;
-        console.log(selected)
         let el = event.target;
         if (el.className.includes('given')) return;
 
@@ -69,7 +68,6 @@ function init() {
             selected.push(el);
         };
         selected = selected.filter(cell => cell.className === 'cell cell-active')
-        console.log(selected)
     };
 
     function assignListeners () {
