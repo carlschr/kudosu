@@ -55,14 +55,13 @@ function init() {
     let selected = [];
     let selectAllowed = false;
 
-    const toggleCell = event => {
+    function toggleCell(event) {
         if (!selectAllowed) return;
         let el = event.target;
         if (el.className.includes('given')) return;
 
         if (el.className.includes('cell-active')) {
             el.className = 'cell';
-            selected.splice(selected.indexOf(el), 1);
         } else {
             el.className = 'cell cell-active';
             selected.push(el);
@@ -95,7 +94,7 @@ function init() {
     function removeActive() {
         let cells = document.querySelectorAll('.cell');
         Array.from(cells).forEach(cell => cell.className = (cell.className !== 'cell given') ? 'cell' : 'cell given');
-    }
+    };
 
     gridEl.addEventListener('mouseleave', () => selectAllowed = false);
 
@@ -138,8 +137,7 @@ function init() {
                 cell.dataset.pencil = newMark;
                 return;
             };
-
-            
+   
             // Code for if the user presses a valid digit
             if (digits.includes(key)){
                 let newText = (currentType === 'answer') ? key : prevText;
