@@ -11,7 +11,7 @@ function init() {
     function addAction(prevGrid, newGrid){
         undoStack.push({
             prevGrid,
-            newGrid
+            newGrid,
         });
         redoStack = [];
     };
@@ -21,6 +21,8 @@ function init() {
         let action = undoStack.pop();
         redoStack.push(action);
         gridEl.innerHTML = action.prevGrid;
+        assignListeners();
+        removeActive();
     };
     
     // Function to redo an action
@@ -28,6 +30,8 @@ function init() {
         let action = redoStack.pop();
         undoStack.push(action);
         gridEl.innerHTML = action.newGrid;
+        assignListeners();
+        removeActive();
     };
     
     // Undo and redo elements
@@ -53,6 +57,7 @@ function init() {
 
     const toggleCell = event => {
         if (!selectAllowed) return;
+        console.log(selected)
         let el = event.target;
         if (el.className.includes('given')) return;
 
@@ -63,20 +68,36 @@ function init() {
             el.className = 'cell cell-active';
             selected.push(el);
         };
+        selected = selected.filter(cell => cell.className === 'cell cell-active')
+        console.log(selected)
     };
 
-    // Click listener to assign a cell to the selected variable
-    // and change stylings accordingly
-    Array.from(gridEl.children).forEach(box => {
-        Array.from(box.children).forEach(cell => {
-            cell.addEventListener('mouseover', toggleCell);
-            cell.addEventListener('mousedown', event => {
-                selected.forEach(el => el.className = 'cell');
-                selectAllowed = true, toggleCell(event);
+    function assignListeners () {
+        // Click listener to assign a cell to the selected variable
+        // and change stylings accordingly
+        gridEl = document.querySelector('.grid');
+        Array.from(gridEl.children).forEach(box => {
+            Array.from(box.children).forEach(cell => {
+                cell.addEventListener('mouseover', toggleCell);
+                cell.addEventListener('mousedown', event => {
+                    if (!selected) return;
+                    selected.forEach(el => {
+                        if (el === event.target) return;
+                        el.className = 'cell';
+                    });
+                    selected = selected.filter(cell => cell.className === 'cell cell-active')
+                    selectAllowed = true, toggleCell(event);
+                });
+                cell.addEventListener('mouseup', () => selectAllowed = false);
             });
-            cell.addEventListener('mouseup', () => selectAllowed = false);
         });
-    });
+    };
+    assignListeners();
+
+    function removeActive() {
+        let cells = document.querySelectorAll('.cell');
+        Array.from(cells).forEach(cell => cell.className = (cell.className !== 'cell given') ? 'cell' : 'cell given');
+    }
 
     gridEl.addEventListener('mouseleave', () => selectAllowed = false);
 
