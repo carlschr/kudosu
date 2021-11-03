@@ -170,6 +170,7 @@ footer>* {
     outline: none;
     border: none;
     cursor: pointer;
+    min-width: calc(var(--grid-width)/6);
 }
 .new {
     height: calc(1.5 * var(--grid-text));
