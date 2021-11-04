@@ -222,8 +222,17 @@ function init() {
     };
     checkButton.addEventListener('click', () => {
         let solved = checkSudoku();
-        if (solved) alert("you've done it");
-    })
+        gridEl.className = 'grid grid-message';
+        if (solved) {
+            gridEl.setAttribute('data-message', 'You solved it! Great job!')
+        } else {
+            gridEl.setAttribute('data-message', 'Not quite right! Keep trying!')
+        };
+    });
+    gridEl.addEventListener('click', () => {
+        if (gridEl.className === 'grid') return;
+        gridEl.className = 'grid';
+    });
 };
 
 init();
