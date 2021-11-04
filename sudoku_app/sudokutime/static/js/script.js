@@ -78,11 +78,12 @@ function init() {
                 cell.addEventListener('mouseover', toggleCell);
                 cell.addEventListener('mousedown', event => {
                     if (!selected) return;
+                    let length = selected.length;
                     selected.forEach(el => {
-                        if (el === event.target) return;
+                        if (el === event.target && length === 1) return;
                         el.className = 'cell';
                     });
-                    selected = selected.filter(cell => cell.className === 'cell cell-active')
+                    selected = selected.filter(cell => cell.className === 'cell cell-active');
                     selectAllowed = true, toggleCell(event);
                 });
                 cell.addEventListener('mouseup', () => selectAllowed = false);
@@ -208,6 +209,21 @@ function init() {
     // Listeners to toggle type selection on click
     pencilButton.addEventListener('click', toggleType);
     answerButton.addEventListener('click', toggleType);
+
+    let checkButton = document.querySelector('.check');
+    function checkSudoku(){
+        let solved = true;
+        let boxes = document.querySelectorAll('.box');
+        Array.from(boxes).forEach(box => {
+            let answer = Array.from(box.children).map(cell => cell.textContent).join('');
+            if (answer !== box.dataset.solved) solved = false;
+        });
+        return solved;
+    };
+    checkButton.addEventListener('click', () => {
+        let solved = checkSudoku();
+        if (solved) alert("you've done it");
+    })
 };
 
 init();
