@@ -222,16 +222,28 @@ function init() {
     };
     checkButton.addEventListener('click', () => {
         let solved = checkSudoku();
-        gridEl.className = 'grid grid-message';
+        let message = document.querySelector('.grid-message');
+        message.style.visibility = 'visible';
         if (solved) {
-            gridEl.setAttribute('data-message', 'You solved it! Great job!')
+            message.textContent = 'You solved it! Great job!';
         } else {
-            gridEl.setAttribute('data-message', 'Not quite right! Keep trying!')
+            message.textContent = 'Not quite right! Keep trying!';
         };
     });
+
+    let helpButton = document.querySelector('.help');
+    function displayHelp(){
+        let content = 'The rules of Sudoku are as follows: each row, column, and box must contain the digits 1 through 9. Digits cannot repeat within a row, column, or box.';
+        let message = document.querySelector('.grid-message');
+        message.innerHTML = content;
+        message.style.visibility = 'visible';
+    }
+    helpButton.addEventListener('click', displayHelp);
+
     gridEl.addEventListener('click', () => {
-        if (gridEl.className === 'grid') return;
-        gridEl.className = 'grid';
+        let message = document.querySelector('.grid-message');
+        if (message.style.visibility === 'hidden') return;
+        message.style.visibility = 'hidden';
     });
 };
 
