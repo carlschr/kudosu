@@ -233,7 +233,10 @@ function init() {
 
     let helpButton = document.querySelector('.help');
     function displayHelp(){
-        let content = 'The rules of Sudoku are as follows: each row, column, and box must contain the digits 1 through 9. Digits cannot repeat within a row, column, or box.';
+        let content = `
+        <h1>The rules of Sudoku are as follows:</h1>
+        <p>Each row, column, and bax must contain the digits 1 through 9.</p>
+        `;
         let message = document.querySelector('.grid-message');
         message.innerHTML = content;
         message.style.visibility = 'visible';
