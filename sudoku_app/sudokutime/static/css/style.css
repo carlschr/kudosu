@@ -1,9 +1,14 @@
 :root {
     --grid-width: min(50vh, 90vw);
+    --pad-width: calc(var(--grid-width)/2 - 1.5em);
     --border-thickness: calc(var(--grid-width)/300);
     --grid-text: calc(var(--grid-width)/30 * 2);
     --primary: rgb(166, 166, 221);
     --secondary: rgb(93, 93, 126);
+    --shadow: rgba(0, 0, 0, .4);
+    --cell-shadow: calc(3 * var(--border-thickness));
+    --svg-size: calc(1.5 * var(--grid-text));
+    --footer-button-size: calc(var(--grid-width)/6);
 }
 
 * {
@@ -14,6 +19,7 @@
 body {
     padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
     background: var(--secondary);
+    font-size: var(--grid-text);
 }
 
 .grid-message {
@@ -36,7 +42,6 @@ body {
     display: grid;
     grid-template: repeat(3, 1fr) / repeat(3, 1fr);
     margin: 32px auto;
-    font-size: var(--grid-text);
     background: black;
 }
 
@@ -67,7 +72,7 @@ body {
 }
 
 .cell-active {
-    box-shadow: inset 0 0 0 calc(3 * var(--border-thickness)) var(--primary);
+    box-shadow: inset 0 0 0 var(--cell-shadow) var(--primary);
 }
 .cell:focus-visible {
     outline: none;
@@ -81,17 +86,17 @@ body {
     font-size: var(--grid-text);
     display: flex;
     justify-content: space-evenly;
-    width: calc(var(--grid-width));
+    width: var(--grid-width);
     margin: 1em auto;
     background: white;
     padding: 1em 0;
-    box-shadow: 0 0 20px 3px rgba(0,0,0,.5);
+    box-shadow: 0 0 20px 3px var(--shadow);
 }
 
 .number-pad, .input-type {
     display: grid;
-    width: calc(var(--grid-width)/2 - 1.5em);
-    height: calc(var(--grid-width)/2 - 1.5em);
+    width: var(--pad-width);
+    height: var(--pad-width);
     font-size: var(--grid-text);
 }
 
@@ -107,9 +112,9 @@ body {
 
 .controls button {
     outline: none;
-    border: solid black 1px;
+    border: solid black .04em;
     cursor: pointer;
-    box-shadow: 0 0 8px 1px rgba(0, 0, 0, .4);
+    box-shadow: 0 0 .25em .04em ;
 }
 
 .number {
@@ -120,7 +125,7 @@ body {
 
 .number:active {
     background: var(--secondary);
-    box-shadow: inset 0 0 0 calc(2 * var(--border-thickness)) black;
+    box-shadow: inset 0 0 0 var(--cell-shadow) black;
 }
 
 .input-type button{
@@ -144,7 +149,7 @@ body {
 }
 
 .answer {
-    font-size: calc(1.5 * var(--grid-text));
+    font-size: 1.5em;
 }
 
 .pencil-mark {
@@ -155,11 +160,11 @@ body {
     top: 7%;
     left: 7%;
     content: '123';
-    font-size: calc(var(--grid-text)*3/4)
+    font-size: .75em;
 }
 
 .active, .undo:active, .redo:active {
-    box-shadow: inset 0 0 0 calc(4 * var(--border-thickness)) var(--primary) !important;
+    box-shadow: inset 0 0 0 var(--cell-shadow) var(--primary) !important;
     cursor: default !important;
     border-color: var(--primary) !important;
 }
@@ -174,7 +179,7 @@ footer {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: calc(1.5 * var(--grid-text));
+    font-size: 1.5em;
     padding: 0 5vw;
 }
 
@@ -184,10 +189,10 @@ footer>* {
     outline: none;
     border: none;
     cursor: pointer;
-    min-width: calc(var(--grid-width)/6);
+    min-width: var(--footer-button-size);
 }
 .new {
-    height: calc(1.5 * var(--grid-text));
-    width: calc(1.5 * var(--grid-text));
-    font-size: calc(1.5 * var(--grid-text));
+    height: var(--svg-size);
+    width: var(--svg-size);
+    font-size: var(--svg-size);
 }
