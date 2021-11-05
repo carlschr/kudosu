@@ -234,8 +234,18 @@ function init() {
     let helpButton = document.querySelector('.help');
     function displayHelp(){
         let content = `
-        <h1>The rules of Sudoku are as follows:</h1>
-        <p>Each row, column, and bax must contain the digits 1 through 9.</p>
+        <div>
+            <h1>The Rules of Sudoku:</h1>
+            <p>Each row, column, and box must contain the digits 1 through 9.</p>
+        </div>
+        <div>
+            <h1>Shortcuts:</h1>
+            <ul>
+                <li><span class='keycap'> 1 </span> - <span class='keycap'> 9 </span>  enter number</li>
+                <li><span class='keycap'> Shift </span>  toggle input type</li>
+                <li><span class='keycap'>Backspace</span>  delete from selection</li>
+            </ul>
+        </div>
         `;
         let message = document.querySelector('.grid-message');
         message.innerHTML = content;
@@ -248,6 +258,30 @@ function init() {
         if (message.style.visibility === 'hidden') return;
         message.style.visibility = 'hidden';
     });
+
+    let newButton = document.querySelector('.new');
+    newButton.addEventListener('click', newPuzzle);
+
+    function newPuzzle() {
+        window.location.reload();
+    };
+
+    let restartButton = document.querySelector('.restart');
+    restartButton.addEventListener('click', restart);
+
+    function restart() {
+        if (undoStack.length === 0) return;
+        let cells = document.querySelectorAll('.cell');
+        cells.forEach(cell => {
+            if (cell.className.includes('given')) return;
+            cell.textContent = '';
+            cell.dataset.pencil = '';
+            cell.className = 'cell';
+        });
+        selected = [];
+        undoStack = [];
+        redoStack = [];
+    };
 };
 
 init();
