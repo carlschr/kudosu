@@ -78,11 +78,12 @@ function init() {
                 cell.addEventListener('mouseover', toggleCell);
                 cell.addEventListener('mousedown', event => {
                     if (!selected) return;
+                    let length = selected.length;
                     selected.forEach(el => {
-                        if (el === event.target) return;
+                        if (el === event.target && length === 1) return;
                         el.className = 'cell';
                     });
-                    selected = selected.filter(cell => cell.className === 'cell cell-active')
+                    selected = selected.filter(cell => cell.className === 'cell cell-active');
                     selectAllowed = true, toggleCell(event);
                 });
                 cell.addEventListener('mouseup', () => selectAllowed = false);
@@ -208,6 +209,79 @@ function init() {
     // Listeners to toggle type selection on click
     pencilButton.addEventListener('click', toggleType);
     answerButton.addEventListener('click', toggleType);
+
+    let checkButton = document.querySelector('.check');
+    function checkSudoku(){
+        let solved = true;
+        let boxes = document.querySelectorAll('.box');
+        Array.from(boxes).forEach(box => {
+            let answer = Array.from(box.children).map(cell => cell.textContent).join('');
+            if (answer !== box.dataset.solved) solved = false;
+        });
+        return solved;
+    };
+    checkButton.addEventListener('click', () => {
+        let solved = checkSudoku();
+        let message = document.querySelector('.grid-message');
+        message.style.visibility = 'visible';
+        if (solved) {
+            message.textContent = 'You solved it! Great job!';
+        } else {
+            message.textContent = 'Not quite right! Keep trying!';
+        };
+    });
+
+    let helpButton = document.querySelector('.help');
+    function displayHelp(){
+        let content = `
+        <div>
+            <h1>The Rules of Sudoku:</h1>
+            <p>Each row, column, and box must contain the digits 1 through 9.</p>
+        </div>
+        <div>
+            <h1>Shortcuts:</h1>
+            <ul>
+                <li><span class='keycap'> 1 </span> - <span class='keycap'> 9 </span>  enter number</li>
+                <li><span class='keycap'> Shift </span>  toggle input type</li>
+                <li><span class='keycap'>Backspace</span>  delete from selection</li>
+            </ul>
+        </div>
+        `;
+        let message = document.querySelector('.grid-message');
+        message.innerHTML = content;
+        message.style.visibility = 'visible';
+    }
+    helpButton.addEventListener('click', displayHelp);
+
+    gridEl.addEventListener('click', () => {
+        let message = document.querySelector('.grid-message');
+        if (message.style.visibility === 'hidden') return;
+        message.style.visibility = 'hidden';
+    });
+
+    let newButton = document.querySelector('.new');
+    newButton.addEventListener('click', newPuzzle);
+
+    function newPuzzle() {
+        window.location.reload();
+    };
+
+    let restartButton = document.querySelector('.restart');
+    restartButton.addEventListener('click', restart);
+
+    function restart() {
+        if (undoStack.length === 0) return;
+        let cells = document.querySelectorAll('.cell');
+        cells.forEach(cell => {
+            if (cell.className.includes('given')) return;
+            cell.textContent = '';
+            cell.dataset.pencil = '';
+            cell.className = 'cell';
+        });
+        selected = [];
+        undoStack = [];
+        redoStack = [];
+    };
 };
 
 init();
