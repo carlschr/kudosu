@@ -181,6 +181,7 @@ footer>* {
     width: var(--footer-button-size);
     text-align: center;
     font-family: "SymbolaRegular";
+    align-items: center;
 }
 
 .svg-container {
