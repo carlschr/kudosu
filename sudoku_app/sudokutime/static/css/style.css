@@ -180,8 +180,13 @@ footer>* {
     cursor: pointer;
     width: var(--footer-button-size);
     text-align: center;
-    font-family: "SymbolaRegular";
     align-items: center;
+    padding: 0;
+    margin: 0;
+}
+
+.restart {
+    font-family: "SymbolaRegular";
 }
 
 .svg-container {
