@@ -178,7 +178,7 @@ footer>* {
     outline: none;
     border: none;
     cursor: pointer;
-    min-width: var(--footer-button-size);
+    width: var(--footer-button-size);
     font-family: "SymbolaRegular";
 }
 .new {
