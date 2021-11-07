@@ -179,6 +179,7 @@ footer>* {
     border: none;
     cursor: pointer;
     width: var(--footer-button-size);
+    text-align: center;
     font-family: "SymbolaRegular";
 }
 .new {
