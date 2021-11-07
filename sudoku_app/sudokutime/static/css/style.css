@@ -178,6 +178,7 @@ footer>* {
     border: none;
     cursor: pointer;
     min-width: var(--footer-button-size);
+    font-family: "SymbolaRegular";
 }
 .new {
     height: var(--svg-size);
