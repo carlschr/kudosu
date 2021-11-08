@@ -12,39 +12,41 @@
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
-    <div class="grid">
-    <div class='grid-message'></div>
-    {%for box in boxes%}
-        <div class='box' data-solved={{box.box_solved}} style={{box.grid_area}}>
-        {% for cell in box.box %}
-        {% if cell == '0' %}
-            <button class='cell' data-pencil=''></button>
-        {% else %}
-            <button class='cell given' data-pencil=''>{{cell}}</button>
-        {% endif %}
-        {% endfor %}
+    <main>
+        <div class="grid">
+        <div class='grid-message'></div>
+        {%for box in boxes%}
+            <div class='box' data-solved={{box.box_solved}} style={{box.grid_area}}>
+            {% for cell in box.box %}
+            {% if cell == '0' %}
+                <button class='cell' data-pencil=''></button>
+            {% else %}
+                <button class='cell given' data-pencil=''>{{cell}}</button>
+            {% endif %}
+            {% endfor %}
+            </div>
+        {%endfor%}
         </div>
-    {%endfor%}
-    </div>
-    <div class="controls">
-        <div class="input-type">
-            <button class="answer active">1</button>
-            <button class="pencil-mark"></button>
-            <button class="undo">&#x21BA;</button>
-            <button class="redo">&#x21BB;</button>
+        <div class="controls">
+            <div class="input-type">
+                <button class="answer active">1</button>
+                <button class="pencil-mark"></button>
+                <button class="undo">&#x21BA;</button>
+                <button class="redo">&#x21BB;</button>
+            </div>
+            <div class="number-pad">
+                <button class="number">1</button>
+                <button class="number">2</button>
+                <button class="number">3</button>
+                <button class="number">4</button>
+                <button class="number">5</button>
+                <button class="number">6</button>
+                <button class="number">7</button>
+                <button class="number">8</button>
+                <button class="number">9</button>
+            </div>
         </div>
-        <div class="number-pad">
-            <button class="number">1</button>
-            <button class="number">2</button>
-            <button class="number">3</button>
-            <button class="number">4</button>
-            <button class="number">5</button>
-            <button class="number">6</button>
-            <button class="number">7</button>
-            <button class="number">8</button>
-            <button class="number">9</button>
-        </div>
-    </div>
+    </main>
     <footer>
         <button class="restart">&#x2B8C;</button>
         <button class="check">&#x2713;</button>
