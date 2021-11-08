@@ -172,7 +172,7 @@ main {
 footer {
     box-sizing: border-box;
     background: black;
-    height: calc(var(--vh, 1vh) * 10);    
+    height: calc(var(--vh, 1vh) * 9);    
     width: 100%;
     display: flex;
     justify-content: space-between;
