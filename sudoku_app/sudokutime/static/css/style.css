@@ -17,14 +17,14 @@
 }
 
 body {
-    /* padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left); */
+    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
     background: var(--secondary);
     font-size: var(--grid-text);
 }
 
 main {
     box-sizing: border-box;
-    padding: 1em;
+    padding: 1em 0;
     min-height: 90vh;
 }
 
