@@ -229,14 +229,23 @@ body {
         border: none;
         cursor: pointer;
         width: var(--footer-button-size);
+        height: 1.2em;
         text-align: center;
         align-items: center;
         padding: 0;
         margin: 0;
+        transition: all .2s linear;
+    }
+
+    footer>*:hover {
+        background: var(--secondary);
+        border-radius: 5%;
     }
 
     .restart {
         font-family: "SymbolaRegular";
+        display: grid;
+        place-items: center;
     }
 
     .svg-container {
@@ -266,6 +275,7 @@ body {
         color: black;
         z-index: 10;
         padding: 1em;
+        cursor: pointer;
     }
     .grid-message h1 { font-size: .85em; }
     .grid-message p { 
@@ -291,4 +301,38 @@ body {
         border: .175em solid gray;
         color: white;
         padding: .75em;
+    }
+
+    .grid-message .load {
+        height: 2em;
+        width: 2em;
+        border-radius: 5000%;
+        border: .2em solid black;
+        position: relative;
+        background: var(--secondary);
+    }
+
+    .load::after {
+        position: absolute;
+        background: var(--primary);
+        height: 100%;
+        width: 50%;
+        top: 0;
+        left: 0;
+        content: '';
+        border-radius: 1000px 0 0 1000px;
+        animation: 2s ease-in-out infinite spin;
+        transform-origin: right;
+    }
+
+    @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+        50% {
+            transform: rotate(180deg);
+        }
+        100% {
+            transform: rotate(360deg);
+        }
     }

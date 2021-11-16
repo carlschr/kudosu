@@ -98,6 +98,8 @@ function init() {
     undoRedo();
     controls();
     footer();
+
+    window.onunload
 };
 
 function undoRedo() {
@@ -288,6 +290,7 @@ function footer() {
     newButton.addEventListener('click', newPuzzle);
 
     function newPuzzle() {
+        loading();
         window.location.reload();
     };
 
@@ -307,6 +310,16 @@ function footer() {
         undoStack = [];
         redoStack = [];
     };
+};
+
+function loading() {
+    let messageDiv = document.querySelector('.grid-message');
+    let content = `
+    <h1>Generating new sudoku</h1>
+    <div class='load'></div>
+    `
+    messageDiv.innerHTML = content;
+    messageDiv.style.visibility = 'visible';
 };
 
 init();
