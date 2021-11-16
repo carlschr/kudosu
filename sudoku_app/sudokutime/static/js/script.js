@@ -6,7 +6,7 @@ let selected = [];
 let selectAllowed = false;
 
 // Pushes action to undo stack
-function addAction(prevGrid, newGrid){
+function addAction(prevGrid, newGrid) {
     undoStack.push({
         prevGrid,
         newGrid,
@@ -15,7 +15,7 @@ function addAction(prevGrid, newGrid){
 };
 
 // Function to undo an action
-function undo(){
+function undo() {
     let action = undoStack.pop();
     redoStack.push(action);
     gridEl.innerHTML = action.prevGrid;
@@ -24,7 +24,7 @@ function undo(){
 };
 
 // Function to redo an action
-function redo(){
+function redo() {
     let action = redoStack.pop();
     undoStack.push(action);
     gridEl.innerHTML = action.newGrid;
@@ -90,29 +90,17 @@ const utils = {
     }
 };
 
-function init() {  
-    let gridEl = document.querySelector('.grid');
-    gridEl.addEventListener('mouseleave', () => selectAllowed = false);
-
-    utils.assignListeners();
-    undoRedo();
-    controls();
-    footer();
-
-    window.onunload
-};
-
 function undoRedo() {
     // Undo and redo elements
     let undoEl = document.querySelector('.undo');
     let redoEl = document.querySelector('.redo');
-
+    
     // Undo click listener
     undoEl.addEventListener('click', () => {
         if (undoStack.length === 0) return;
         undo();
     });
-
+    
     // Redo click listener
     redoEl.addEventListener('click', () => {
         if (redoStack.length === 0) return;
@@ -122,14 +110,14 @@ function undoRedo() {
 
 function controls() {
     let gridEl = document.querySelector('.grid');
-
+    
     // Listener to enable user input of numbers with keyboard
     document.addEventListener('keyup', event => {
         if (event.key === "Shift") return toggleType();
-
+        
         // Flags for aborting early
         if (!selected) return;
-
+        
         // Constant values
         const key = event.key;
         const digits = '123456789';
@@ -139,46 +127,46 @@ function controls() {
             // Previous values
             let prevText = cell.textContent;
             let prevMark = cell.dataset.pencil;
-
+            
             // Code for if the user presses backspace
             if (key === 'Backspace'){
                 let newText =  '';
                 let newMark = prevMark.slice(0, prevMark.length - 1);
-
+                
                 cell.textContent = newText;
                 cell.dataset.pencil = newMark;
                 return;
             };
-
+            
             // Flags for aborting early
             if (currentType === 'pencil-mark' && cell.textContent) return;
-
+            
             // Code for if the pencil mark already has the digit
             if (cell.dataset.pencil.includes(key) && currentType === 'pencil-mark') {
                 let newMark = prevMark.slice(0, prevMark.indexOf(key)) + prevMark.slice(prevMark.indexOf(key) + 1);
                 let newText = prevText;
-
+                
                 cell.textContent = newText;
                 cell.dataset.pencil = newMark;
                 return;
             };
-   
+            
             // Code for if the user presses a valid digit
             if (digits.includes(key)){
                 let newText = (currentType === 'answer') ? key : prevText;
                 let newMark = (currentType === 'pencil-mark') ? prevMark + key : '';
-
+                
                 if (cell.textContent === key) newText = '';
-
+                
                 cell.textContent = newText;
                 cell.dataset.pencil = newMark;
             };
         });
-
+        
         let newGrid = gridEl.innerHTML;
         addAction(prevGrid, newGrid);
     });
-
+    
     // Allows user input of numbers with number button elements
     let numbers = document.querySelectorAll('button.number');
     numbers.forEach(num => {
@@ -191,40 +179,40 @@ function controls() {
                 if (currentType === 'pencil-mark' && cell.textContent) return;
                 let prevText = cell.textContent;
                 let prevMark = cell.dataset.pencil;
-    
+                
                 // new values
                 let newText = (currentType === 'answer' && cell.textContent !== val) 
                               ? val 
                               : (currentType === 'answer') 
                               ? '' 
                               : prevText;
-    
-                let newMark = (currentType === 'pencil-mark' && !prevMark.includes(val)) 
+                              
+                              let newMark = (currentType === 'pencil-mark' && !prevMark.includes(val)) 
                               ? prevMark + val 
                               : (currentType === 'pencil-mark') 
                               ? prevMark.slice(0, prevMark.indexOf(val)) + prevMark.slice(prevMark.indexOf(val) + 1) 
                               : '';
-    
-                cell.textContent = newText;
-                cell.dataset.pencil = newMark;
-            });
-
-            let newGrid = gridEl.innerHTML;
-            addAction(prevGrid, newGrid);
-        });
-    });
-
-    // Answer type buttons
-    let pencilButton = document.querySelector('.pencil-mark');
-    let answerButton = document.querySelector('.answer');
-
-    // Funtion that toggles active classes
-    function toggleType(){
-        if (answerButton.className.includes('active')) {
-            answerButton.className = 'answer';
-            pencilButton.className = 'pencil-mark active';
-            currentType = 'pencil-mark';
-        } else {
+                              
+                              cell.textContent = newText;
+                              cell.dataset.pencil = newMark;
+                            });
+                            
+                            let newGrid = gridEl.innerHTML;
+                            addAction(prevGrid, newGrid);
+                        });
+                    });
+                    
+                    // Answer type buttons
+                    let pencilButton = document.querySelector('.pencil-mark');
+                    let answerButton = document.querySelector('.answer');
+                    
+                    // Funtion that toggles active classes
+                    function toggleType(){
+                        if (answerButton.className.includes('active')) {
+                            answerButton.className = 'answer';
+                            pencilButton.className = 'pencil-mark active';
+                            currentType = 'pencil-mark';
+                        } else {
             answerButton.className = 'answer active';
             pencilButton.className = 'pencil-mark';
             currentType = 'answer';
@@ -262,16 +250,16 @@ function footer() {
     function displayHelp(){
         let content = `
         <div>
-            <h1>The Rules of Sudoku:</h1>
-            <p>Each row, column, and box must contain the digits 1 through 9.</p>
+        <h1>The Rules of Sudoku:</h1>
+        <p>Each row, column, and box must contain the digits 1 through 9.</p>
         </div>
         <div>
-            <h1>Shortcuts:</h1>
-            <ul>
-                <li><span class='keycap'> 1 </span> - <span class='keycap'> 9 </span>  enter number</li>
-                <li><span class='keycap'> Shift </span>  toggle input type</li>
-                <li><span class='keycap'>Backspace</span>  delete from selection</li>
-            </ul>
+        <h1>Shortcuts:</h1>
+        <ul>
+        <li><span class='keycap'> 1 </span> - <span class='keycap'> 9 </span>  enter number</li>
+        <li><span class='keycap'> Shift </span>  toggle input type</li>
+        <li><span class='keycap'>Backspace</span>  delete from selection</li>
+        </ul>
         </div>
         `;
         let message = document.querySelector('.grid-message');
@@ -279,24 +267,24 @@ function footer() {
         message.style.visibility = 'visible';
     }
     helpButton.addEventListener('click', displayHelp);
-
-    gridEl.addEventListener('click', () => {
+    
+    function hideMessage() {
         let message = document.querySelector('.grid-message');
         if (message.style.visibility === 'hidden') return;
         message.style.visibility = 'hidden';
-    });
+    };
+    gridEl.addEventListener('click', hideMessage);
 
     let newButton = document.querySelector('.new');
-    newButton.addEventListener('click', newPuzzle);
-
     function newPuzzle() {
         loading();
+        gridEl.removeEventListener('click', hideMessage);
+        document.querySelector('.grid-message').style.cursor = 'default';
         window.location.reload();
     };
-
+    newButton.addEventListener('click', newPuzzle);
+    
     let restartButton = document.querySelector('.restart');
-    restartButton.addEventListener('click', restart);
-
     function restart() {
         if (undoStack.length === 0) return;
         let cells = document.querySelectorAll('.cell');
@@ -310,6 +298,7 @@ function footer() {
         undoStack = [];
         redoStack = [];
     };
+    restartButton.addEventListener('click', restart);
 };
 
 function loading() {
@@ -322,4 +311,13 @@ function loading() {
     messageDiv.style.visibility = 'visible';
 };
 
+function init() {  
+    let gridEl = document.querySelector('.grid');
+    gridEl.addEventListener('mouseleave', () => selectAllowed = false);
+
+    utils.assignListeners();
+    undoRedo();
+    controls();
+    footer();
+};
 init();
