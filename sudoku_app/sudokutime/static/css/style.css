@@ -81,8 +81,10 @@ body {
             cursor: default; 
         }
 
-        .cell:not(.given):hover {
-            background: var(--secondary);
+        @media (hover:hover){
+            .cell:not(.given):hover {
+                background: var(--secondary);
+            }
         }
 
         .cell-active {
@@ -145,8 +147,10 @@ body {
                         inset 0 0 0 var(--cell-shadow) black;
         }
 
-        .number:hover {
-            background: var(--secondary);
+        @media (hover: hover){
+            .number:hover {
+                background: var(--secondary);
+            }
         }
 
         .input-type button{
@@ -203,9 +207,10 @@ body {
             cursor: default !important;
             border-color: var(--primary) !important;
         }
-
-        .answer:not(.active):hover, .pencil-mark:not(.active):hover, .undo:hover, .redo:hover {
-            background: var(--secondary);
+        @media (hover:hover){
+            .answer:not(.active):hover, .pencil-mark:not(.active):hover, .undo:hover, .redo:hover {
+                background: var(--secondary);
+            }
         }
 
 /* Footer rules */
@@ -236,10 +241,11 @@ body {
         margin: 0;
         transition: all .2s linear;
     }
-
-    footer>*:hover {
-        background: var(--secondary);
-        border-radius: 5%;
+    @media (hover: hover){
+        footer>*:hover {
+            background: var(--secondary);
+            border-radius: 5%;
+        }
     }
 
     .restart {
