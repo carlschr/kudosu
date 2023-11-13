@@ -2,7 +2,6 @@
 
 ## About
 A web application that generates random, solvable sudoku puzzles.
-
 Created with Python + Django backend and HTML + CSS + JavaScript frontend.
 
 ## Features
