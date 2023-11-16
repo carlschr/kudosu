@@ -1,5 +1,5 @@
 pipeline {
-    agent { docker { image 'python:3.12.0-alpine3.18' } }
+    agent { docker { image 'mcr.microsoft.com/windows-cssc/python3.7.2windows:ltsc2019' } }
     stages {
         stage('build') {
             steps {
